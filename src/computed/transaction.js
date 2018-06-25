@@ -10,7 +10,8 @@ const ComputedTransaction = store => {
       const i = invoices ? invoices.slice() : [];
       const all = [].concat(t, p, i);
       all.sort((a, b) => b.date.getTime() - a.date.getTime());
-      all.forEach(t => {
+      all.forEach((t, i) => {
+        t.key = String(i);
         t.typeLabel = toCaps(t.type);
         t.statusLabel = toCaps(t.status);
         t.dateLabel = t.date.toLocaleDateString();

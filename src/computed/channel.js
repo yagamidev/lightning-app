@@ -12,7 +12,8 @@ const ComputedChannel = store => {
         (a, b) => (a.status > b.status ? -1 : a.status < b.status ? 1 : 0)
       );
       all.sort((a, b) => (a.active === b.active ? 0 : a.active ? -1 : 1));
-      all.forEach(c => {
+      all.forEach((c, i) => {
+        c.key = String(i);
         c.statusLabel = toCaps(c.status);
         c.capacityLabel = toAmountLabel(c.capacity, settings);
         c.localBalanceLabel = toAmountLabel(c.localBalance, settings);

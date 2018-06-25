@@ -1,7 +1,7 @@
 import React, { Component, PureComponent } from 'react';
 import {
   View,
-  ListView,
+  FlatList,
   TouchableOpacity,
   ViewPropTypes,
   StyleSheet,
@@ -36,25 +36,15 @@ ListContent.propTypes = {
 // List
 //
 
-export class List extends Component {
-  constructor(props) {
-    super(props);
-    this.ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2,
-    });
-  }
-
-  get dataSource() {
-    return this.ds.cloneWithRows(this.props.data);
-  }
-
+export class List extends PureComponent {
   render() {
+    const { data, renderItem, renderHeader } = this.props;
     return (
-      <ListView
-        dataSource={this.dataSource}
-        renderHeader={this.props.renderHeader}
-        renderRow={this.props.renderItem}
-        enableEmptySections={true}
+      <FlatList
+        data={data}
+        renderItem={({ item }) => renderItem(item)}
+        ListHeaderComponent={renderHeader}
+        initialNumToRender={15}
       />
     );
   }
