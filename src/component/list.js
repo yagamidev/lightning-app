@@ -36,6 +36,14 @@ ListContent.propTypes = {
 // List
 //
 
+const ITEM_HEIGHT = 40;
+const SEPARATOR_HEIGHT = 0;
+const VIEWABILITY_CONFIG = {
+  minimumViewTime: 3000,
+  viewAreaCoveragePercentThreshold: 100,
+  waitForInteraction: true,
+};
+
 export class List extends PureComponent {
   render() {
     const { data, renderItem, renderHeader } = this.props;
@@ -45,8 +53,20 @@ export class List extends PureComponent {
         renderItem={({ item }) => renderItem(item)}
         ListHeaderComponent={renderHeader}
         initialNumToRender={15}
+        legacyImplementation={false}
+        numColumns={1}
+        refreshing={false}
+        viewabilityConfig={VIEWABILITY_CONFIG}
+        getItemLayout={this._getItemLayout}
       />
     );
+  }
+
+  _getItemLayout(data, index) {
+    const length = ITEM_HEIGHT;
+    const separator = SEPARATOR_HEIGHT;
+    const header = ITEM_HEIGHT;
+    return { length, offset: (length + separator) * index + header, index };
   }
 }
 
@@ -65,7 +85,7 @@ const itemStyles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    height: ITEM_HEIGHT,
     boxShadow: `0 0.5px ${color.greyBorder}`,
   },
 });
