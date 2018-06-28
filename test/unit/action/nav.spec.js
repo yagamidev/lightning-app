@@ -28,7 +28,7 @@ describe('Action Nav Unit Tests', () => {
 
   describe('constructor()', () => {
     it('should listen to open-url event', () => {
-      expect(nav._store, 'to be ok');
+      expect(store.route.location.pathname, 'to equal', '/');
       expect(ipcRenderer.on, 'was called with', 'open-url');
     });
   });
@@ -230,6 +230,18 @@ describe('Action Nav Unit Tests', () => {
     it('should set correct route', () => {
       nav.goDeposit();
       expect(store.route.location.pathname, 'to equal', '/deposit');
+    });
+  });
+
+  describe('goBack()', () => {
+    it('should set correct route', () => {
+      nav.goLoader();
+      nav.goHome();
+      expect(store.route.location.pathname, 'to equal', '/home');
+      nav.goBack();
+      expect(store.route.location.pathname, 'to equal', '/loader');
+      nav.goBack();
+      expect(store.route.location.pathname, 'to equal', '/');
     });
   });
 });
