@@ -33,7 +33,7 @@ const PaymentView = ({ store, nav, payment }) => (
       <Title title="Lightning Payment">
         <Icon image="lightning-bolt" style={{ height: 12, width: 6.1 }} />
       </Title>
-      <CancelButton onPress={() => nav.goBack()} />
+      <CancelButton onPress={() => nav.goHome()} />
     </Header>
     <MainContent>
       <Card>
