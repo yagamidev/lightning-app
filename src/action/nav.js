@@ -118,7 +118,7 @@ class NavAction {
     // this._store.route.push('/cli');
   }
 
-  goFundWallet() {
+  goDeposit() {
     this._store.displayCopied = false;
     this._store.route.push('/deposit');
   }
