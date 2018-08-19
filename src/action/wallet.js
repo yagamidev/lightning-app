@@ -14,12 +14,13 @@ import { when } from 'mobx';
 import * as log from './log';
 
 class WalletAction {
-  constructor(store, grpc, db, nav, notification) {
+  constructor(store, grpc, db, nav, notification, ipc) {
     this._store = store;
     this._grpc = grpc;
     this._db = db;
     this._nav = nav;
     this._notification = notification;
+    this._ipc = ipc;
   }
 
   //
