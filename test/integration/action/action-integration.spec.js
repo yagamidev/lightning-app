@@ -40,6 +40,7 @@ const HOST_1 = `localhost:${LND_PEER_PORT_1}`;
 const HOST_2 = `localhost:${LND_PEER_PORT_2}`;
 const NAP_TIME = process.env.NAP_TIME || 5000;
 const walletPassword = 'bitconeeeeeect';
+const newWalletPassword = 'wassupwassup';
 
 const wireUpIpc = (s1, s2) => {
   s1.send = (msg, ...args) => {
