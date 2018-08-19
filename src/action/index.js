@@ -73,27 +73,32 @@ observe(store, 'firstStart', async () => {
 });
 
 /**
- * Triggered after the user's password has unlocked the wallet.
+ * Triggered after the user's password has unlocked the wallet
+ * or a user's password has been successfully reset.
  */
 observe(store, 'walletUnlocked', async () => {
-  await nap();
-  await grpc.closeUnlocker();
-  await grpc.initLnd();
+  if (store.walletUnlocked) {
+    await nap();
+    await grpc.closeUnlocker();
+    await grpc.initLnd();
+  }
 });
 
 /**
- * Triggered once the main lnd grpc client is inialized. This is when
+ * Triggered once the main lnd grpc client is initialized. This is when
  * the user can really begin to interact with the application and calls
  * to and from lnd can be done. The display the current state of the
  * lnd node all balances, channels and transactions are fetched.
  */
 observe(store, 'lndReady', () => {
-  wallet.getNewAddress();
-  wallet.pollBalances();
-  wallet.pollExchangeRate();
-  channel.update();
-  transaction.update();
-  transaction.subscribeTransactions();
-  transaction.subscribeInvoices();
-  info.pollInfo();
+  if (store.lndReady) {
+    wallet.getNewAddress();
+    wallet.pollBalances();
+    wallet.pollExchangeRate();
+    channel.update();
+    transaction.update();
+    transaction.subscribeTransactions();
+    transaction.subscribeInvoices();
+    info.pollInfo();
+  }
 });
