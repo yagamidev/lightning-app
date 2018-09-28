@@ -9,30 +9,30 @@ describe('Computed Channels Unit Tests', () => {
     store.settings.displayFiat = false;
     store.channels.push({
       remotePubkey: 'some-pub-key',
-      id: '0',
       capacity: 2005000,
       localBalance: 1990000,
       remoteBalance: 10000,
       channelPoint: 'some-channel-point',
+      fundingTxId: 'tx-id-0',
       active: true,
       status: 'open',
     });
     store.pendingChannels.push({
       remotePubkey: 'some-pub-key',
-      id: '1',
       capacity: 1005000,
       localBalance: 600000,
       remoteBalance: 400000,
       channelPoint: 'some-channel-point',
+      fundingTxId: 'tx-id-1',
       status: 'pending-open',
     });
     store.pendingChannels.push({
       remotePubkey: 'some-pub-key',
-      id: '2',
       capacity: 805000,
       localBalance: 500000,
       remoteBalance: 300000,
       channelPoint: 'some-channel-point',
+      fundingTxId: 'tx-id-2',
       status: 'pending-closing',
     });
   });
@@ -52,7 +52,7 @@ describe('Computed Channels Unit Tests', () => {
     it('should aggregate open and pending channels', () => {
       ComputedChannel(store);
       expect(store.computedChannels.length, 'to equal', 3);
-      const ch = store.computedChannels.find(t => t.id === '0');
+      const ch = store.computedChannels.find(t => t.fundingTxId === 'tx-id-0');
       expect(ch.statusLabel, 'to equal', 'Open');
       expect(ch.capacityLabel, 'to match', /0[,.]02005/);
       expect(ch.localBalanceLabel, 'to match', /0[,.]0199/);
@@ -68,7 +68,7 @@ describe('Computed Channels Unit Tests', () => {
       store.settings.exchangeRate.usd = 0.00014503;
       ComputedChannel(store);
       expect(store.computedChannels.length, 'to equal', 3);
-      const ch = store.computedChannels.find(t => t.id === '0');
+      const ch = store.computedChannels.find(t => t.fundingTxId === 'tx-id-0');
       expect(ch.capacityLabel, 'to match', /138[,.]25/);
       expect(ch.localBalanceLabel, 'to match', /137[,.]21/);
       expect(ch.remoteBalanceLabel, 'to match', /0[,.]69/);

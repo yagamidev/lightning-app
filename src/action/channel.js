@@ -100,7 +100,6 @@ class ChannelAction {
       const { channels } = await this._grpc.sendCommand('listChannels');
       this._store.channels = channels.map(channel => ({
         remotePubkey: channel.remote_pubkey,
-        id: channel.chan_id,
         capacity: parseSat(channel.capacity),
         localBalance: parseSat(channel.local_balance),
         remoteBalance: parseSat(channel.remote_balance),

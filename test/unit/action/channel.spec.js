@@ -101,7 +101,6 @@ describe('Action Channels Unit Tests', () => {
       });
       await channel.getChannels();
       expect(store.channels[0], 'to satisfy', {
-        id: 42,
         fundingTxId: 'FFFF',
         status: 'open',
       });

@@ -215,7 +215,6 @@ store.selectedTransaction = (store.computedTransactions || []).find(
 store.channels = [...Array(4)].map(() => ({
   remotePubkey:
     '0343bc80b914aebf8e50eb0b8e445fc79b9e6e8e5e018fa8c5f85c7d429c117b38',
-  id: '1337006139441152',
   fundingTxId: '610da3203c36b17783477cbe5db092220ac7d58477cbe5db092',
   capacity: 2005000,
   localBalance: 1990000,
@@ -228,7 +227,6 @@ store.channels = [...Array(4)].map(() => ({
 store.pendingChannels = [...Array(6)].map((x, i) => ({
   remotePubkey:
     '0343bc80b914aebf8e50eb0b8e445fc79b9e6e8e5e018fa8c5f85c7d429c117b38',
-  id: '1337006139441152',
   fundingTxId: '610da3203c36b17783477cbe5db092220ac7d58477cbe5db092',
   capacity: 1005000,
   localBalance: 600000,
