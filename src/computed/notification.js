@@ -32,8 +32,11 @@ const ComputedNotification = store => {
       });
       return all;
     }),
-    notificationCountLabel: computed(() =>
-      formatNumber(store.computedNotifications.length)
+    notificationCountLabel: computed(
+      () =>
+        store.showNtfnCount
+          ? formatNumber(store.computedNotifications.length)
+          : '0'
     ),
   });
 };
