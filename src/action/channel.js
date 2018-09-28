@@ -83,6 +83,7 @@ class ChannelAction {
       this.getPeers(),
       this.getChannels(),
       this.getPendingChannels(),
+      this.getClosedChannels(),
     ]);
   }
 
@@ -162,6 +163,32 @@ class ChannelAction {
       this._store.pendingChannels = [].concat(pocs, pccs, pfccs, wccs);
     } catch (err) {
       log.error('Listing pending channels failed', err);
+    }
+  }
+
+  /**
+   * List the closed channels by calling the respective grpc api and updating
+   * the closed channels array in the global store.
+   * @return {Promise<undefined>}
+   */
+  async getClosedChannels() {
+    try {
+      const { channels: closedChannels } = await this._grpc.sendCommand(
+        'closedChannels'
+      );
+      this._store.closedChannels = closedChannels.map(channel => ({
+        remotePubkey: channel.remote_pubkey,
+        capacity: parseSat(channel.capacity),
+        channelPoint: channel.channel_point,
+        fundingTxId: this._parseChannelPoint(channel.channel_point)
+          .funding_txid_str,
+        localBalance: parseSat(channel.settled_balance),
+        remoteBalance:
+          parseSat(channel.capacity) - parseSat(channel.settled_balance),
+        status: 'closed',
+      }));
+    } catch (err) {
+      log.error('Listing closed channels failed', err);
     }
   }
 
@@ -282,14 +309,7 @@ class ChannelAction {
       force,
     });
     await new Promise((resolve, reject) => {
-      stream.on('data', data => {
-        if (data.close_pending) {
-          this.update();
-        }
-        if (data.chan_close) {
-          this._removeClosedChannel(channelPoint);
-        }
-      });
+      stream.on('data', () => this.update());
       stream.on('end', resolve);
       stream.on('error', reject);
       stream.on('status', status => log.info(`Closing channel: ${status}`));
@@ -304,12 +324,6 @@ class ChannelAction {
       funding_txid_str: channelPoint.split(':')[0],
       output_index: parseInt(channelPoint.split(':')[1], 10),
     };
-  }
-
-  _removeClosedChannel(channelPoint) {
-    const pc = this._store.pendingChannels;
-    const channel = pc.find(c => c.channelPoint === channelPoint);
-    if (channel) pc.splice(pc.indexOf(channel));
   }
 }
 

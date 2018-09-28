@@ -63,6 +63,7 @@ export class Store {
       peers: [],
       channels: [],
       pendingChannels: [],
+      closedChannels: [],
       selectedChannel: null,
       channel: {
         pubkeyAtHost: '',
