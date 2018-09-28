@@ -57,6 +57,7 @@ class ChannelAction {
    * @return {undefined}
    */
   init() {
+    this._store.channel.alertSeen = true;
     this._nav.goChannels();
     this.update();
   }
@@ -99,6 +100,9 @@ class ChannelAction {
   async getChannels() {
     try {
       const { channels } = await this._grpc.sendCommand('listChannels');
+      if (channels.length === 0 && this._store.channels.length !== 0) {
+        this._store.channel.alertSeen = false;
+      }
       this._store.channels = channels.map(channel => ({
         remotePubkey: channel.remote_pubkey,
         capacity: parseSat(channel.capacity),

@@ -1,11 +1,14 @@
 import { Store } from '../../../src/store';
 import ComputedChannel from '../../../src/computed/channel';
+import NavAction from '../../../src/action/nav';
 
 describe('Computed Channels Unit Tests', () => {
   let store;
+  let nav;
 
   beforeEach(() => {
     store = new Store();
+    nav = new NavAction(store);
     store.settings.displayFiat = false;
     store.channels.push({
       remotePubkey: 'some-pub-key',
@@ -47,6 +50,12 @@ describe('Computed Channels Unit Tests', () => {
       expect(store.channelBalancePendingLabel, 'to equal', '0');
       expect(store.channelBalanceClosingLabel, 'to equal', '0');
       expect(store.showChannelAlert, 'to equal', true);
+    });
+
+    it('should not show channel alert after navigating to view', () => {
+      nav.goChannels();
+      ComputedChannel(store);
+      expect(store.showChannelAlert, 'to be', false);
     });
 
     it('should aggregate open and pending channels', () => {
